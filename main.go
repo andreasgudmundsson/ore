@@ -13,7 +13,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/guptarohit/asciigraph"
+	ui "github.com/gizak/termui"
 )
 
 type graphRequest struct {
@@ -46,22 +46,73 @@ func main() {
 		fmt.Errorf("error='%v', leftovers='%v'", err, e)
 	}
 
-	var ts []float64
-	readLoop(
-		func(s string) {
-			x, err := strconv.ParseFloat(s, 64)
-			if err == nil {
+	quit := make(chan bool)
+	defer close(quit)
+
+	ts_chan := make(chan float64)
+	defer close(ts_chan)
+
+	{
+		if err := ui.Init(); err != nil {
+			panic(err)
+		}
+		defer ui.Close()
+
+		quitHandler := func(ui.Event) {
+			ui.StopLoop()
+			quit <- true
+		}
+
+		ui.Handle("C-c", quitHandler)
+		ui.Handle("q", quitHandler)
+	}
+
+	go func(ts_chan chan<- float64) {
+		readLoop(
+			func(s string) {
+				x, err := strconv.ParseFloat(s, 64)
+				if err == nil {
+					ts_chan <- x
+				}
+			},
+		)
+
+	}(ts_chan)
+
+	go func(ts_chan <-chan float64, quit <-chan bool) {
+		var ts []float64
+		for {
+			select {
+			case <-quit:
+				return
+			case x := <-ts_chan:
 				ts = append(ts, x)
 				if len(ts) > 60*60 {
 					ts = ts[len(ts)>>1:]
 				}
-				plot(parsedExpr, ts)
+				plot(apply(parsedExpr, ts))
 			}
-		},
-	)
+		}
+	}(ts_chan, quit)
+
+	ui.Loop()
 }
 
-func plot(exp parser.Expr, ts []float64) {
+func plot(ts []float64) {
+	chart := ui.NewLineChart()
+	chart.Data = map[string][]float64{"x": ts}
+	chart.Width = 200
+	chart.Height = 20
+	chart.X = 0
+	chart.Y = 0
+	chart.AxesColor = ui.ColorBlack
+	chart.LineColor["x"] = ui.ColorBlack
+
+	ui.Render(chart)
+
+}
+
+func apply(exp parser.Expr, ts []float64) []float64 {
 	metric := "stdin"
 	from := int64(0)
 	until := int64(len(ts))
@@ -96,16 +147,10 @@ func plot(exp parser.Expr, ts []float64) {
 	if err != nil {
 		fmt.Errorf("error='%v' expr='%v'", err, exp)
 	}
-	fmt.Println(metricMap)
-	fmt.Println(out)
 	if len(out) > 0 {
-		values := NaNToZero(out[0].Values)
-		if len(values) > 1 {
-			fmt.Println(values)
-			graph := asciigraph.Plot(values)
-			fmt.Println(graph)
-		}
+		return NaNToZero(out[0].Values)
 	}
+	return nil
 }
 
 func NaNToZero(xs []float64) []float64 {
