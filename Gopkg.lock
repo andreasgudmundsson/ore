@@ -58,6 +58,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  branch = "master"
+  digest = "1:20e84447a2f8555b014195aa52342b71adf4b40e8eb75abc4e620890a5de16d5"
+  name = "github.com/gizak/termui"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "fede2b0a7496f62f701fff3ea518ffd0740cf580"
+
+[[projects]]
   branch = "update_zipper"
   digest = "1:a9aa321bcfb62507805b1e6171a891d6ebc5901118a27ae0e85618fa7511edd2"
   name = "github.com/go-graphite/carbonapi"
@@ -191,14 +199,6 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:72177d3aa0fb32e60bbab3dcf06ab12877019612892263346c40b83ebe6a5036"
-  name = "github.com/guptarohit/asciigraph"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "b8c6bd8cace5d89062a57acb2012b0be08fb9525"
-  version = "v0.4.1"
-
-[[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -248,6 +248,14 @@
   pruneopts = "UT"
   revision = "ce7b0b5c7b45a81508558cd1dba6bb1e4ddb51bb"
   version = "v0.0.3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:abf08734a6527df70ed361d7c369fb580e6840d8f7a6012e5f609fdfd93b4e48"
+  name = "github.com/mitchellh/go-wordwrap"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9e67c67572bc5dd02aef930e2b0ae3c02a4b5a5c"
 
 [[projects]]
   digest = "1:645110e089152bd0f4a011a2648fbb0e4df5977be73ca605781157ac297f50c4"
@@ -336,14 +344,6 @@
   revision = "ed8402a42d5f52ff8d3369f179e12243906f298a"
 
 [[projects]]
-  digest = "1:9b4fd49bb5908e00ecb36f3199008562d5c9fa7b3ddee554465f4d8bfde52d4c"
-  name = "github.com/wayneashleyberry/terminal-dimensions"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "29d939246793fbd8100dcf74700637adcb839bc5"
-  version = "v1.0.0"
-
-[[projects]]
   digest = "1:777e729b475d3895c7229552aa10076f0d177daf37c0a72258006d046d329960"
   name = "go.uber.org/atomic"
   packages = ["."]
@@ -430,15 +430,13 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/gizak/termui",
     "github.com/go-graphite/carbonapi/expr",
     "github.com/go-graphite/carbonapi/expr/functions",
     "github.com/go-graphite/carbonapi/expr/rewrite",
     "github.com/go-graphite/carbonapi/expr/types",
     "github.com/go-graphite/carbonapi/pkg/parser",
     "github.com/go-graphite/protocol/carbonapi_v3_pb",
-    "github.com/guptarohit/asciigraph",
-    "github.com/nsf/termbox-go",
-    "github.com/wayneashleyberry/terminal-dimensions",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

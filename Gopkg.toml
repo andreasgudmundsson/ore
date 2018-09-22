@@ -33,18 +33,11 @@
   name = "github.com/go-graphite/protocol"
   version = "0.4.2"
 
+[[constraint]]
+  name = "github.com/gizak/termui"
+  branch = "master"
+
+
 [prune]
   go-tests = true
   unused-packages = true
-
-[[constraint]]
-  name = "github.com/guptarohit/asciigraph"
-  version = "0.4.1"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/nsf/termbox-go"
-
-[[constraint]]
-  name = "github.com/wayneashleyberry/terminal-dimensions"
-  version = "1.0.0"
